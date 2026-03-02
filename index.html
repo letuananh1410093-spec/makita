@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>My Makita Thailand - Warranty System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --makita-teal: #005559;
+            --makita-red: #E30613;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            margin: 0; padding: 0;
+            background-color: #ddd; 
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* --- HEADER CHUẨN (ẢNH 2) --- */
+        .top-nav {
+            background-color: var(--makita-teal);
+            color: white;
+            padding: 12px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-left img { height: 28px; }
+        .nav-center { display: flex; align-items: center; gap: 10px; }
+        .nav-center img { width: 22px; cursor: pointer; border: 1px solid rgba(255,255,255,0.3); }
+        .nav-right { display: flex; gap: 15px; }
+        .nav-right a { color: white; text-decoration: none; font-size: 12px; font-weight: 500; }
+
+        /* --- NỘI DUNG CHÍNH --- */
+        .main-content {
+            flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px;
+        }
+        .card {
+            background: white; width: 100%; max-width: 420px;
+            border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden; text-align: center;
+        }
+        .card-header { padding: 30px 20px; border-bottom: 1px solid #eee; }
+        .card-header h2 { margin: 0; color: var(--makita-teal); font-size: 24px; font-weight: 800; }
+        .card-body { padding: 35px 25px; }
+        
+       /* Ô nhập số điện thoại bo tròn đều */
+input { 
+    width: 100%; 
+    padding: 15px 25px; 
+    border: 1px solid #ddd; 
+    background: #f0f4f7;
+    border-radius: 50px; /* Số này lớn sẽ giúp 2 đầu tròn xoe */
+    margin-bottom: 20px; 
+    font-size: 18px; 
+    outline: none; 
+    text-align: center;
+    box-sizing: border-box; /* Quan trọng: để padding không làm biến dạng ô */
+    display: block;
+}
+
+/* Nút bấm bo tròn đều */
+button { 
+    width: 100%; 
+    padding: 16px; 
+    background: var(--makita-teal); 
+    color: white; 
+    border: none; 
+    border-radius: 50px; /* Bo tròn đều giống input */
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 16px;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+        /* --- ĐẾM NGƯỢC (ẢNH 4) --- */
+        .countdown-box {
+            margin-top: 25px; padding: 20px; background: #f9f9f9; border-radius: 15px; border: 1px solid #eee;
+        }
+        .timer-display { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+        .t-unit { background: var(--makita-teal); color: white; padding: 10px; border-radius: 10px; min-width: 50px; }
+        .t-label { font-size: 10px; display: block; opacity: 0.8; margin-top: 4px; font-weight: normal; }
+
+        /* --- FOOTER CHUẨN (ẢNH 1 & 3) --- */
+        footer { background-color: var(--makita-teal); color: white; padding: 45px 8%; font-size: 13px; }
+        .footer-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; }
+        .footer-col { flex: 1; min-width: 220px; }
+        .footer-col h4 { text-transform: uppercase; margin-bottom: 20px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .contact-link { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .icon-c { background: white; color: var(--makita-teal); width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; }
+        .social-icons { display: flex; gap: 12px; margin-top: 20px; }
+        .social-icons a { background: white; color: var(--makita-teal); width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; }
+        .lang-f { display: flex; align-items: center; gap: 10px; margin-top: 12px; cursor: pointer; opacity: 0.7; transition: 0.3s; }
+        .lang-f.active { opacity: 1; font-weight: bold; }
+        .lang-f img { width: 22px; border-radius: 2px; }
+
+        @media (max-width: 768px) { .footer-col { min-width: 100%; } .top-nav { flex-direction: column; gap: 10px; } }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <div class="nav-left">  <a href="https://mymakita.in.th/Home"> <img src="https://i.postimg.cc/28SvmVf4/Makita-Logo-svg.png"> </a> </div>
+        <div class="nav-center">
+            <img src="https://flagcdn.com/w20/th.png" onclick="changeLang('th')">
+            <span style="opacity:0.5">|</span>
+            <img src="https://flagcdn.com/w20/gb.png" onclick="changeLang('en')">
+        </div>
+        <div class="nav-right" id="nav-links">
+     
+            <a href="#">Check Warranty</a>
+            <a href="https://mymakita.in.th/Home/FAQ">FAQs</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="card">
+            <div class="card-header"><h2>MY MAKITA</h2><small>WARRANTY SYSTEM</small></div>
+            <div class="card-body">
+                <input type="text" id="phone" placeholder="0xxxxxxxxx">
+                <button id="btn-check" onclick="checkWarranty()">ตรวจสอบ / CHECK NOW</button>
+                <div id="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+          <div class="col-md-3 col-xl-2" style="line-height: 80%;">
+            <h3 class="text-mitrh3 text-white pl-2 pt-3 pl-md-4 pt-md-5 font-weight-bold">
+                MAKITA THAILAND
+            </h3>
+            <br>
+           
+            <h3 class="text-mitrh3 text-white pl-2 pl-md-4 font-weight-bold d-md-none">
+                THAI SENG INTERNATIONAL (THAILAND) CO., LTD.
+            </h3>
+            <br>
+            <p class="text-mitrmenu pl-2 pl-md-4 d-none d-md-block" style="line-height: 1.1;">
+                9/57, 9/58
+                <br>Moo 3 Tambol Bangsaothong,
+                <br>Amphur Bangsaothong,
+                <br>Samutprakan,
+                <br>10570
+            </p>
+            <p class="text-mitrmenu pl-2 pl-md-4 d-md-none" style="line-height: 1.5">
+                9/57, 9/58 Moo 3,
+                <br>Tambol Bangsaothong,
+                <br>Amphur Bangsaothong, Samutprakan 10570
+            </p>
+        </div>
+            <div class="footer-col">
+                <h4 id="f2">ติดต่อเรา</h4>
+                <div class="contact-link"><span class="icon-c"><i class="fa-solid fa-play"></i></span> <span>เว็บไซต์มาคีต้าไทย</span></div>
+                <div class="contact-link"><span class="icon-c"><i class="fa-solid fa-play"></i></span> <span>เว็บไซต์กลางมาคีต้า</span></div>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="#"><i class="fa-brands fa-line"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 id="f4">ภาษาของเว็บไซต์</h4>
+                <div class="lang-f active" id="l-th" onclick="changeLang('th')">ไทย <img src="https://flagcdn.com/w20/th.png"></div>
+                <div class="lang-f" id="l-en" onclick="changeLang('en')">ENGLISH <img src="https://flagcdn.com/w20/gb.png"></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            th: { btn: "ตรวจสอบ", check: "กำลังตรวจสอบ...", res: "วันที่เปิดใช้งาน: ", exp: "วันหมดอายุ: ", rem: "เหลือเวลาประกัน:", d: "วัน", h: "ชม.", m: "นาที", s: "วินาที", expired: "หมดประกัน" },
+            en: { btn: "CHECK NOW", check: "Checking...", res: "Activation Date: ", exp: "Expiry Date: ", rem: "Remaining Warranty:", d: "D", h: "H", m: "M", s: "S", expired: "Expired" }
+        };
+
+        let currentLang = 'th';
+        let timer;
+
+        function changeLang(l) {
+            currentLang = l;
+            document.getElementById('btn-check').innerText = translations[l].btn;
+            document.getElementById('l-th').classList.toggle('active', l==='th');
+            document.getElementById('l-en').classList.toggle('active', l==='en');
+        }
+
+        async function checkWarranty() {
+            const p = document.getElementById('phone').value.trim();
+            const r = document.getElementById('result');
+            if(!p) return;
+            if(timer) clearInterval(timer);
+            
+            r.innerHTML = `<div style="margin-top:20px">${translations[currentLang].check}</div>`;
+            try {
+                const res = await fetch('https://script.google.com/macros/s/AKfycbycezxp60egXTXJ-7xK-UZ4i7in4ZmPKfS-DJ6cHPqlOXxlhcrtVnlHfG4mSIPcrrRE4w/exec', { method: 'POST', body: JSON.stringify({phone: p}) });
+                const data = await res.json();
+                
+                // Sửa lỗi NaN: Nhận diện cả định dạng ISO (Ảnh 4) và dd/mm/yyyy
+                let actDate = data.date.includes('T') ? new Date(data.date) : (function(){
+                    const parts = data.date.split(' ')[0].split('/');
+                    return new Date(parts[2], parts[1]-1, parts[0]);
+                })();
+
+                if (isNaN(actDate)) throw new Error();
+
+                const expDate = new Date(actDate);
+                expDate.setFullYear(expDate.getFullYear() + 1);
+
+                r.innerHTML = `
+                    <div style="font-size:15px; margin-top:15px">${translations[currentLang].res} <b>${actDate.toLocaleDateString('vi-VN')}</b></div>
+                    <div style="color:var(--makita-red); font-weight:bold; margin-top:8px">${translations[currentLang].exp} ${expDate.toLocaleDateString('vi-VN')}</div>
+                    <div class="countdown-box">
+                        <div style="font-size:12px; font-weight:bold">${translations[currentLang].rem}</div>
+                        <div id="t-disp" class="timer-display"></div>
+                    </div>`;
+                
+                startTimer(expDate);
+            } catch (e) { r.innerHTML = "<div style='color:red; margin-top:20px'>Error: Invalid Data!</div>"; }
+        }
+
+        function startTimer(end) {
+            const disp = document.getElementById('t-disp');
+            const update = () => {
+                const dist = end - new Date();
+                if (dist < 0) { clearInterval(timer); disp.innerHTML = `<b style="color:red">${translations[currentLang].expired}</b>`; return; }
+                const d = Math.floor(dist/864e5), h = Math.floor((dist%864e5)/36e5), m = Math.floor((dist%36e5)/6e4), s = Math.floor((dist%6e4)/1e3);
+                disp.innerHTML = `<div class="t-unit">${d}<span class="t-label">${translations[currentLang].d}</span></div>` +
+                                 `<div class="t-unit">${h}<span class="t-label">${translations[currentLang].h}</span></div>` +
+                                 `<div class="t-unit">${m}<span class="t-label">${translations[currentLang].m}</span></div>` +
+                                 `<div class="t-unit">${s}<span class="t-label">${translations[currentLang].s}</span></div>`;
+            };
+            update();
+            timer = setInterval(update, 1000);
+        }
+    </script>
+</body>
+</html>
